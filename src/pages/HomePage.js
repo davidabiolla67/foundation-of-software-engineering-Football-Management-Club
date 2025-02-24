@@ -90,7 +90,7 @@ const sliderSettings = {
   ],
 };
 
-const HomePage = () => {
+const HomePage = ({}) => {
   const [userDetails, setUserDetails] = useState(null);
 
   // Featured Players Data
@@ -142,10 +142,10 @@ const HomePage = () => {
             variant="contained"
             color="primary"
             component={Link}
-            to="/team"
+            to="/contact"
             sx={{ mr: 2 }}
           >
-            Meet the Team
+            Contact Us
           </Button>
           <Button
             variant="outlined"

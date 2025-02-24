@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Container, TextField, Button, Typography, Grid, Box, Alert, Card, CardContent } from "@mui/material";
 import { LocationOn, Phone, Email, Language } from "@mui/icons-material";
+import emailjs from "emailjs-com"; // Import EmailJS
 
 const ContactPage = () => {
+  // State to hold form data
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -10,32 +12,49 @@ const ContactPage = () => {
     message: ""
   });
 
+  // States to handle success and error messages
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  // Update form state as user types
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle form submission with EmailJS
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation
+    // Basic validation: required fields must be filled
     if (!formData.name || !formData.email || !formData.message) {
       setError("Please fill in all required fields.");
       return;
     }
 
-    // Simulate successful form submission
-    setSuccess(true);
-    setError("");
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: ""
-    });
+    // EmailJS credentials
+    const serviceID = "service_fsxqku6"; 
+    const templateID = "template_bw1iicf"; 
+    const userID = "kiZ7FCV9y4kzva4qp";
+
+    // Send email via EmailJS
+    emailjs.send(serviceID, templateID, formData, userID)
+      .then((response) => {
+        console.log("SUCCESS!", response.status, response.text);
+        setSuccess(true);
+        setError("");
+        // Clear form fields after successful submission
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: ""
+        });
+      })
+      .catch((err) => {
+        console.log("FAILED...", err);
+        setError("Something went wrong. Please try again later.");
+      });
   };
 
   return (
@@ -131,23 +150,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-
-
-
-
-
-
-
-                                              // first basic code in case of errors
-// import { Container, Typography } from "@mui/material";
-
-// const ContactPage = () => {
-//   return (
-//     <Container>
-//       <Typography variant="h3">Contact Us</Typography>
-//       <Typography>Email: contact@footballclub.com</Typography>
-//     </Container>
-//   );
-// };
-
-// export default ContactPage;

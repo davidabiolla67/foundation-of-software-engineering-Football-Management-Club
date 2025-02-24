@@ -1,28 +1,111 @@
 import React, { useEffect, useState } from "react";
 import { auth, db } from "./Firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { Typography, Button, Box, Grid, Card, CardContent, CardMedia } from "@mui/material";
+import {
+  Typography,
+  Button,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+} from "@mui/material";
 import { Link } from "react-router-dom";
-import stadiumBg from "../assets/images/stadium.jpg"; // Background image
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import Carousel from "react-material-ui-carousel"; // For Latest News Carousel
+import stadiumBg from "../assets/images/stadium.jpg";
 import player1 from "../assets/images/player1.jpg";
 import player2 from "../assets/images/player2.jpg";
 import player3 from "../assets/images/player3.jpg";
 import latestNews1 from "../assets/images/LatestNews1.jpg";
 
-const HomePage = () => {
-  const [userDetails, setuserDetails] = useState(null);
+// Custom Next Arrow Component
+function SampleNextArrow(props) {
+  const { onClick } = props;
+  return (
+    <Button
+      onClick={onClick}
+      sx={{
+        position: "absolute",
+        right: "10px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        zIndex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        color: "#fff",
+        "&:hover": { backgroundColor: "rgba(0,0,0,0.7)" },
+      }}
+    >
+      Next
+    </Button>
+  );
+}
 
-  // ✅ Featured Players Data
+// Custom Prev Arrow Component
+function SamplePrevArrow(props) {
+  const { onClick } = props;
+  return (
+    <Button
+      onClick={onClick}
+      sx={{
+        position: "absolute",
+        left: "10px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        zIndex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        color: "#fff",
+        "&:hover": { backgroundColor: "rgba(0,0,0,0.7)" },
+      }}
+    >
+      Prev
+    </Button>
+  );
+}
+
+const sliderSettings = {
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 3, // Adjust the number of slides visible at once
+  slidesToScroll: 1,
+  arrows: true,
+  draggable: true,
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />,
+  responsive: [
+    {
+      breakpoint: 960,
+      settings: {
+        slidesToShow: 2,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+      },
+    },
+  ],
+};
+
+const HomePage = () => {
+  const [userDetails, setUserDetails] = useState(null);
+
+  // Featured Players Data
   const featuredPlayers = [
     { name: "John Doe", position: "Forward", goals: 15, img: player1 },
     { name: "Alex Smith", position: "Midfielder", goals: 12, img: player2 },
     { name: "Carlos Vega", position: "Defender", goals: 5, img: player3 },
   ];
 
-  // ✅ Latest News Data
+  // Latest News Data
   const latestNews = [
     { title: "Unity FC Wins Local Derby", img: latestNews1 },
-    { title: "New Midfielder Joins Unity FC", img: "/assets/images/news2.jpg" },
+    { title: "New Midfielder Joins Unity FC", img: latestNews1 },
+    { title: "Championship Qualifiers Announced", img: latestNews1 },
+    { title: "Unity FC Prepares for Next Season", img: latestNews1 },
   ];
 
   return (
@@ -75,8 +158,8 @@ const HomePage = () => {
         </Box>
       </Box>
 
-      {/* 👥 Featured Players Section */}
-      <Box sx={{ p: 4, backgroundColor: "#f9f9f9" }}>
+      {/* 👥 Featured Players Section as Carousel */}
+      <Box sx={{ p: 4, backgroundColor: "#f9f9f9", position: "relative" }}>
         <Typography
           variant="h4"
           sx={{
@@ -89,10 +172,9 @@ const HomePage = () => {
         >
           ⭐ Featured Players
         </Typography>
-
-        <Grid container spacing={3}>
+        <Slider {...sliderSettings}>
           {featuredPlayers.map((player, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Box key={index} sx={{ padding: "0 10px" }}>
               <Card
                 sx={{
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -110,11 +192,15 @@ const HomePage = () => {
                   alt={player.name}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "https://via.placeholder.com/200x150?text=No+Image";
+                    e.target.src =
+                      "https://via.placeholder.com/200x150?text=No+Image";
                   }}
                 />
                 <CardContent>
-                  <Typography variant="h6" sx={{ color: "#003366", fontWeight: "bold" }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#003366", fontWeight: "bold" }}
+                  >
                     {player.name}
                   </Typography>
                   <Typography variant="body2" sx={{ color: "#555" }}>
@@ -125,12 +211,12 @@ const HomePage = () => {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Slider>
       </Box>
 
-      {/* 📰 Latest News Section */}
+      {/* 📰 Latest News Section as Carousel */}
       <Box sx={{ p: 4, backgroundColor: "#f9f9f9" }}>
         <Typography
           variant="h4"
@@ -144,10 +230,15 @@ const HomePage = () => {
         >
           📰 Latest News
         </Typography>
-
-        <Grid container spacing={3}>
+        <Carousel
+          autoPlay={true}
+          interval={5000}
+          indicators={true}
+          navButtonsAlwaysVisible={true}
+          sx={{ maxWidth: "800px", margin: "0 auto" }}
+        >
           {latestNews.map((news, index) => (
-            <Grid item xs={12} md={6} key={index}>
+            <Box key={index} sx={{ padding: "0 10px" }}>
               <Card
                 sx={{
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -160,23 +251,27 @@ const HomePage = () => {
               >
                 <CardMedia
                   component="img"
-                  height="140"
+                  height="200"
                   image={news.img}
                   alt={news.title}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "https://via.placeholder.com/400x200?text=News+Image";
+                    e.target.src =
+                      "https://via.placeholder.com/400x200?text=News+Image";
                   }}
                 />
                 <CardContent>
-                  <Typography variant="h6" sx={{ color: "#003366", fontWeight: "bold" }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#003366", fontWeight: "bold" }}
+                  >
                     {news.title}
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Carousel>
       </Box>
     </div>
   );

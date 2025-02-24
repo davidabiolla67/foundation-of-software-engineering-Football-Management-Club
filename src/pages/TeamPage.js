@@ -1,50 +1,48 @@
-import React, { useState } from 'react';
-import './TeamPage.css';
 
-const players = [
-  {
-    id: 1,
-    name: 'John Doe',
-    position: 'Forward',
-    jerseyNumber: 9,
-    matchesPlayed: 25,
-    goals: 15,
-    assists: 7,
-    image: require('../assets/images/player1.jpg')
-  },
-  {
-    id: 2,
-    name: 'Mike Smith',
-    position: 'Midfielder',
-    jerseyNumber: 10,
-    matchesPlayed: 28,
-    goals: 8,
-    assists: 12,
-    image: require('../assets/images/player2.jpg')
-  },
-  {
-    id: 3,
-    name: 'Carlos Vega',
-    position: 'Defender',
-    jerseyNumber: 5,
-    matchesPlayed: 30,
-    goals: 3,
-    assists: 5,
-    image: require('../assets/images/player3.jpg')
-  },
-  {
-    id: 4,
-    name: 'Liam Johnson',
-    position: 'Goalkeeper',
-    jerseyNumber: 1,
-    matchesPlayed: 32,
-    goals: 0,
-    assists: 2,
-    image: require('../assets/images/player4.jpg')
-  }
-];
+import './TeamPage.css';
+import { useState, useEffect } from "react";
+import {  db } from "../pages/Firebase";
+import { docs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+
+
+
+
+
+
 
 const TeamPage = () => {
+  
+  const [players, setPlayers] = useState([]);
+ 
+
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "playerinfo"));
+        const playersList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setPlayers(playersList);
+       
+      
+      } catch (error) {
+        console.error("Error fetching players:", error);
+      }
+    };
+
+    fetchPlayers();
+  }, []);
+
+ 
+
+console.log(players)
+
+
+
+
+
   const [selectedPlayer, setSelectedPlayer] = useState(null);
 
   const openModal = (player) => {
@@ -62,7 +60,7 @@ const TeamPage = () => {
       <div className="player-grid">
         {players.map((player) => (
           <div className="player-card" key={player.id} onClick={() => openModal(player)}>
-            <img src={player.image} alt={player.name} className="player-image" />
+            <img src={player.img} alt={player.name} className="player-image" />
             <h2>{player.name}</h2>
             <p><strong>Position:</strong> {player.position}</p>
             <p><strong>Jersey Number:</strong> #{player.jerseyNumber}</p>
@@ -74,7 +72,7 @@ const TeamPage = () => {
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn" onClick={closeModal}>X</button>
-            <img src={selectedPlayer.image} alt={selectedPlayer.name} className="modal-image" />
+            <img src={selectedPlayer.img} alt={selectedPlayer.name} className="modal-image" />
             <h2>{selectedPlayer.name}</h2>
             <p><strong>Position:</strong> {selectedPlayer.position}</p>
             <p><strong>Jersey Number:</strong> #{selectedPlayer.jerseyNumber}</p>

@@ -82,6 +82,17 @@ const Header = () => {
         {/* Conditional Rendering for Login/Logout */}
         {userDetails ? (
           <>
+           <Button
+              color="inherit"
+              sx={{
+                transition: "transform 0.2s ease",
+                "&:hover": { transform: "scale(1.2)", color: "#FFD700" },
+              }}
+            >
+             Shop Merch
+            </Button>
+
+
             <Button
               color="inherit"
               sx={{

@@ -3,7 +3,7 @@ import { auth, db } from "../pages/Firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import clubLogo from "../assets/images/club-logo1.jpg"; // Import logo
+import clubLogo from "../assets/images/club-logo1.jpg"; 
 
 const Header = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -28,8 +28,9 @@ const Header = () => {
         setUserDetails(null);
       }
     });
-
+   
     return () => unsubscribe();
+    
   }, []);
 
   async function handleLogout() {
@@ -39,7 +40,7 @@ const Header = () => {
       console.log(error.message);
     }
   }
-
+ 
   return (
     <AppBar position="static" style={{ background: "#003366" }}>
       <Toolbar>
@@ -89,7 +90,7 @@ const Header = () => {
                 "&:hover": { transform: "scale(1.2)", color: "#FFD700" },
               }}
             >
-             Shop Merch
+             Store
             </Button>
 
 

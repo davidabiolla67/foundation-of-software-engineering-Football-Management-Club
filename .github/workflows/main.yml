@@ -3,7 +3,7 @@ name: Selenium Tests
 on:
   push:
     branches:
-      - frontend  # Trigger the workflow on push to the main branch
+      - frontend  # Trigger the workflow on push to the frontend branch
   pull_request:
     branches:
       - main  # Trigger the workflow on pull request to the main branch
@@ -27,6 +27,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run Cucumber Tests
+      # Step 4: Install Chrome and ChromeDriver
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo apt --fix-broken install -y
+
+      - name: Install ChromeDriver
+        uses: actions/setup-chromedriver@v1
+        with:
+          chrome-version: 'latest'  # Optionally specify the version if needed
+
+      # Step 5: Run Cucumber Tests
       - name: Run Cucumber Tests
         run: npx cucumber-js  # This runs your cucumber tests with the specified configuration

@@ -42,7 +42,7 @@ const Header = () => {
   }
  
   return (
-    <AppBar position="static" style={{ background: "#003366" }}>
+    <AppBar className="AppBar" position="static" style={{ background: "#003366" }}>
       <Toolbar>
         <img
           src={clubLogo}

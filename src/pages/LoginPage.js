@@ -43,9 +43,9 @@ const LoginPage = () => {
     <Container maxWidth="sm">
       <form >
       <Typography variant="h2">Login</Typography>
-      <TextField fullWidth label="Email" margin="normal" value={Email} onChange={(e)=>setEmail(e.target.value)} />
-      <TextField fullWidth label="Password" type="password" margin="normal"  value={Password} onChange={(e)=>setPassword(e.target.value)} />
-      <Button variant="contained" color="primary" fullWidth style={{ marginTop: "10px" }} onClick={handleLogin}>
+      <TextField fullWidth label="Email" margin="normal"   name="email"   value={Email} onChange={(e)=>setEmail(e.target.value)} />
+      <TextField fullWidth label="Password" type="password" margin="normal"   name="password"   value={Password} onChange={(e)=>setPassword(e.target.value)} />
+      <Button variant="contained" color="primary" id="login_btn" fullWidth style={{ marginTop: "10px" }} onClick={handleLogin}>
         Login
       </Button>
       <Typography variant="body2" style={{ marginTop: "10px" }}>

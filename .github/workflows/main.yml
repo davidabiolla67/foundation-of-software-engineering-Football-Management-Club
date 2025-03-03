@@ -1,28 +1,32 @@
-name: CI for Node.js
+name: Selenium Tests
 
 on:
   push:
     branches:
-      - frontend   # This triggers the workflow when you push to the main branch
+      - main  # Trigger the workflow on push to the main branch
   pull_request:
     branches:
-      - main   # This triggers the workflow when a PR is opened against the main branch
+      - main  # Trigger the workflow on pull request to the main branch
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  selenium-test:
+    runs-on: ubuntu-latest   # This tells GitHub to run the job on an Ubuntu machine
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      # Step 2: Set up Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '22'  # Replace with the version of Node.js you're using
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
+      # Step 4: Run Cucumber Tests
+      - name: Run Cucumber Tests
+        run: npx cucumber-js  # This runs your cucumber tests with the specified configuration

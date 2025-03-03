@@ -3,7 +3,7 @@ name: Selenium Tests
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the main branch
+      - frontend  # Trigger the workflow on push to the main branch
   pull_request:
     branches:
       - main  # Trigger the workflow on pull request to the main branch

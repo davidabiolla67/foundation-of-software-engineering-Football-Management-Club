@@ -8,7 +8,9 @@ let driver;  // Declare driver globally
 // Hook: Runs before each scenario
 Before(async function () {
     const chromeCapabilities = Capabilities.chrome();
-    chromeCapabilities.set('goog:chromeOptions', { args: ['--disable-gpu'] });
+    chromeCapabilities.set('goog:chromeOptions', { 
+        args: ['--disable-gpu', '--headless', '--no-sandbox', '--user-data-dir=/path/to/a/unique/directory'] 
+    });
 
     driver = new Builder().withCapabilities(chromeCapabilities).build();
 });
@@ -32,7 +34,7 @@ When('I input valid credentials', async function () {
 });
 
 Then('I should be navigated to home page', async function () {
-    await driver.wait(until.elementLocated(By.css('.AppBar')), 10000);
+    await driver.wait(until.elementLocated(By.css('.AppBar')), 10000); // Wait for AppBar to appear on home page
 });
 
 // Steps for unsuccessful login
@@ -43,8 +45,9 @@ When('I input invalid credentials', async function () {
 });
 
 Then('I should see an error message', async function () {
-    let errorMessage = await driver.wait(until.elementLocated(By.className("Toastify__toast")),5000);
+    // Wait for the error message to appear
+    let errorMessage = await driver.wait(until.elementLocated(By.className("Toastify__toast")), 5000);
     let text = await errorMessage.getText();
-    assert.strictEqual(text, "invalid-credential.");
-    console.log(text)
+    assert.strictEqual(text, "invalid-credential.");  // Check if the message matches
+    console.log(text);  // Log the error message to the console
 });

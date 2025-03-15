@@ -28,13 +28,16 @@ jobs:
         run: npm install
 
       # Step 4: Install Chrome and ChromeDriver
-      - name: Install Chrome
+      - name: Install Google Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y wget
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb
-          sudo apt --fix-broken install -y
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt --fix-broken install -y
+
+
+
+          
 
       - name: Install ChromeDriver
         uses: saiichihashimoto/setup-chromedriver@v1
@@ -47,7 +50,4 @@ jobs:
 
 
 
-
-
- 
 

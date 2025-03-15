@@ -37,10 +37,17 @@ jobs:
           sudo apt --fix-broken install -y
 
       - name: Install ChromeDriver
-        uses: actions/setup-chromedriver@v1
+        uses: saiichihashimoto/setup-chromedriver@v1
         with:
           chrome-version: 'latest'  # Optionally specify the version if needed
 
       # Step 5: Run Cucumber Tests
       - name: Run Cucumber Tests
         run: npx cucumber-js  # This runs your cucumber tests with the specified configuration
+
+
+
+
+
+ 
+

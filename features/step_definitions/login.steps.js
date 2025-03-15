@@ -6,14 +6,31 @@ require('chromedriver');
 let driver;  // Declare driver globally
 
 // Hook: Runs before each scenario
-Before(async function () {
-    const chromeCapabilities = Capabilities.chrome();
-    chromeCapabilities.set('goog:chromeOptions', { 
-        args: ['--disable-gpu'] 
-    });
+const { Before } = require('@cucumber/cucumber');
+const { Builder, Capabilities } = require('selenium-webdriver');
+const os = require('os');
+const path = require('path');
 
-    driver = new Builder().withCapabilities(chromeCapabilities).build();
+Before(async function () {
+  const chromeCapabilities = Capabilities.chrome();
+  
+  // Create a unique temporary directory for Chrome's user data.
+  const uniqueUserDataDir = path.join(os.tmpdir(), 'chrome-profile-' + Date.now());
+
+  chromeCapabilities.set('goog:chromeOptions', {
+    args: [
+      '--disable-gpu',
+      '--no-sandbox',
+      '--disable-dev-shm-usage',
+      `--user-data-dir=${uniqueUserDataDir}`  // unique user data directory for this session
+    ]
+  });
+
+  driver = new Builder().withCapabilities(chromeCapabilities).build();
 });
+
+
+
 
 // Hook: Runs after each scenario
 After(async function () {

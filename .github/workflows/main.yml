@@ -31,15 +31,19 @@ jobs:
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt --fix-broken install -y
 
-      # New Step: Start the Application Server in Background
+      # Step: Start the application server in the background
       - name: Start application server
         run: |
-          # Start the server in the background (adjust the command as needed)
-          nohup npm start & 
-          # Wait for the server to be up and running (adjust time if necessary)
-          sleep 10
+          nohup npm start &
+          # Wait 15 seconds for the server to be ready
+          sleep 15
+          # Optionally, you can check if the server is responding:
+          curl -s --retry 5 --retry-delay 2 http://localhost:3000/login
+
+      - name: Check if server is up
+        run: |
+          curl -I http://localhost:3000/login
+
 
       - name: Run Cucumber Tests
         run: npx cucumber-js
-
-

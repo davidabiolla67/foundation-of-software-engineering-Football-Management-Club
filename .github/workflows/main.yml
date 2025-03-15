@@ -3,31 +3,27 @@ name: Selenium Tests
 on:
   push:
     branches:
-      - frontend  # Trigger the workflow on push to the frontend branch
+      - frontend  # Run when code is pushed to the "frontend" branch
   pull_request:
     branches:
-      - main  # Trigger the workflow on pull request to the main branch
+      - main      # Run when a pull request is made to the "main" branch
 
 jobs:
-  selenium-test:
-    runs-on: ubuntu-latest   # This tells GitHub to run the job on an Ubuntu machine
+  selenium-tests:
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'  # Replace with the version of Node.js you're using
+          node-version: '22'
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Install Chrome and ChromeDriver
       - name: Install Google Chrome
         run: |
           sudo apt-get update
@@ -35,19 +31,7 @@ jobs:
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt --fix-broken install -y
 
-
-
-          
-
-      - name: Install ChromeDriver
-        uses: saiichihashimoto/setup-chromedriver@v1
-        with:
-          chrome-version: 'latest'  # Optionally specify the version if needed
-
-      # Step 5: Run Cucumber Tests
       - name: Run Cucumber Tests
-        run: npx cucumber-js  # This runs your cucumber tests with the specified configuration
-
-
+        run: npx cucumber-js
 
 

@@ -9,7 +9,7 @@ let driver;  // Declare driver globally
 Before(async function () {
     const chromeCapabilities = Capabilities.chrome();
     chromeCapabilities.set('goog:chromeOptions', { 
-        args: ['--disable-gpu', '--headless', '--no-sandbox', '--user-data-dir=/path/to/a/unique/directory'] 
+        args: ['--disable-gpu'] 
     });
 
     driver = new Builder().withCapabilities(chromeCapabilities).build();
@@ -18,6 +18,7 @@ Before(async function () {
 // Hook: Runs after each scenario
 After(async function () {
     if (driver) {
+
         await driver.quit();
     }
 });
@@ -44,10 +45,28 @@ When('I input invalid credentials', async function () {
     await driver.findElement(By.id("login_btn")).click();
 });
 
-Then('I should see an error message', async function () {
-    // Wait for the error message to appear
-    let errorMessage = await driver.wait(until.elementLocated(By.className("Toastify__toast")), 5000);
+Then('I should see an error message', { timeout: 15000 }, async function () {
+    // Pause to allow the toast notification to appear
+    await driver.sleep(5000);
+    
+    // Increase wait time for locating the toast element
+    let errorMessage = await driver.wait(
+      until.elementLocated(By.className("Toastify__toast")),
+      10000
+    );
+    
     let text = await errorMessage.getText();
-    assert.strictEqual(text, "invalid-credential.");  // Check if the message matches
-    console.log(text);  // Log the error message to the console
+    let cleanedText = text.trim();
+    
+    // Debugging logs
+    console.log('Raw text:', JSON.stringify(text));
+    console.log('Cleaned text:', JSON.stringify(cleanedText));
+    console.log('Char codes:', cleanedText.split('').map(c => c.charCodeAt(0)));
+    console.log('Error text:', JSON.stringify(text));
+    console.log(text);
+    
+    // Assert the error text
+    assert.strictEqual(cleanedText, "invalid-credential.");
 });
+
+

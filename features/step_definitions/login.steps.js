@@ -1,5 +1,5 @@
 
-let driver;  // Declare driver globally
+  // Declare driver globally
 
 // Hook: Runs before each scenario
 
@@ -10,8 +10,8 @@ const os = require('os');
 const path = require('path');
 const assert = require('assert');
 require('chromedriver');
-
-Before(async function () {
+let driver;
+Before({ timeout: 15000}, async function () {
   const chromeCapabilities = Capabilities.chrome();
 
   // Create a unique temporary directory for Chrome's user data
@@ -46,22 +46,22 @@ After(async function () {
 });
 
 // Steps for successful login
-Given('I open the login page', async function () {
+Given('I open the login page', { timeout: 15000}, async function () {
     await driver.get('http://localhost:3000/login');
 });
 
-When('I input valid credentials', async function () {
+When('I input valid credentials', { timeout: 15000}, async function () {
     await driver.findElement(By.name("email")).sendKeys("rayo@gmail.com");
     await driver.findElement(By.name("password")).sendKeys("password123");
     await driver.findElement(By.id("login_btn")).click();
 });
 
-Then('I should be navigated to home page', async function () {
+Then('I should be navigated to home page', { timeout: 15000}, async function () {
     await driver.wait(until.elementLocated(By.css('.AppBar')), 10000); // Wait for AppBar to appear on home page
 });
 
 // Steps for unsuccessful login
-When('I input invalid credentials', async function () {
+When('I input invalid credentials',{ timeout: 15000}, async function () {
     await driver.findElement(By.name("email")).sendKeys("wronguser@gmail.com");
     await driver.findElement(By.name("password")).sendKeys("wrongpassword");
     await driver.findElement(By.id("login_btn")).click();

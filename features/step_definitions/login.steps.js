@@ -6,8 +6,8 @@ require('chromedriver');
 let driver;  // Declare driver globally
 
 // Hook: Runs before each scenario
-const { Before } = require('@cucumber/cucumber');
-const { Builder, Capabilities } = require('selenium-webdriver');
+
+
 const os = require('os');
 const path = require('path');
 

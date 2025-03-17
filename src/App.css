@@ -36,3 +36,189 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+/* NEW TEAM PAGE  2 pLAYER CSS */
+/* .team-page {
+  padding: 20px;
+  text-align: center;
+}
+
+.team-title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.player-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  width: 250px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.player-card:hover {
+  transform: scale(1.05);
+}
+
+.player-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.player-name {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+@media (max-width: 600px) {
+  .player-card {
+    width: 90%;
+  }
+} */
+                          /* 2 PLAYER ENDS HERE BELOW FOR 6 PLAYERS */
+
+/* .team-page {
+  padding: 20px;
+  text-align: center;
+}
+
+.team-title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.player-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  width: 250px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.player-card:hover {
+  transform: scale(1.05);
+}
+
+.player-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.player-name {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+@media (max-width: 600px) {
+  .player-card {
+    width: 90%;
+  }
+} */
+
+
+                              /* Clickable cards UI Teampage.js below */
+
+/* TeamPage.css */
+
+/* Grid Layout */
+/* TeamPage.css */
+
+/* Player Grid */
+.team-page {
+  text-align: center;
+  padding: 20px;
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.player-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  width: 250px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.player-card:hover {
+  transform: scale(1.05);
+}
+
+.player-image {
+  width: 100%;
+  height: 150px; /* Smaller fixed height */
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.modal-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}

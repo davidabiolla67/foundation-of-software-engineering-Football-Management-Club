@@ -3,7 +3,7 @@ import { auth, db } from "../pages/Firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import clubLogo from "../assets/images/club-logo.jpg"; // Import logo
+import clubLogo from "../assets/images/club-logo1.jpg"; 
 
 const Header = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -15,13 +15,9 @@ const Header = () => {
         try {
           const docRef = doc(db, "Users", user.uid);
           const docSnap = await getDoc(docRef);
-          console.log(docSnap.data())
           if (docSnap.exists()) {
-            console.log("i am in")
             setUserDetails(docSnap.data());
-            console.log("User data fetched:", docSnap.data());
           } else {
-            console.log("User document does not exist");
             setUserDetails(null);
           }
         } catch (error) {
@@ -29,46 +25,108 @@ const Header = () => {
           setUserDetails(null);
         }
       } else {
-        console.log("User is not logged in");
         setUserDetails(null);
       }
     });
-
-    // Cleanup listener on unmount
+   
     return () => unsubscribe();
+    
   }, []);
 
-  async function handleLagout() {
-    try{
-    await auth.signOut()
-    }
-    catch(error){
-      console.log(error.message)
+  async function handleLogout() {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.log(error.message);
     }
   }
+ 
   return (
-    <AppBar position="static" style={{ background: "#003366" }}>
+    <AppBar className="AppBar" position="static" style={{ background: "#003366" }}>
       <Toolbar>
-        <img src={clubLogo} alt="Club Logo" style={{ height: "50px", marginRight: "20px" }} />
-        <Typography variant="h5" style={{ flexGrow: 1, fontFamily: "Bebas Neue", letterSpacing: "2px" }}>
-          Football Club
+        <img
+          src={clubLogo}
+          alt="Club Logo"
+          style={{ height: "50px", marginRight: "20px" }}
+        />
+
+        <Typography
+          variant="h5"
+          style={{
+            flexGrow: 1,
+            fontFamily: "Bebas Neue",
+            letterSpacing: "2px",
+          }}
+        >
+          Unity Football Club
         </Typography>
-        <Button color="inherit" component={Link} to="/">Home</Button>
-        <Button color="inherit" component={Link} to="/team">Team</Button>
-        <Button color="inherit" component={Link} to="/fixtures">Fixtures</Button>
-        <Button color="inherit" component={Link} to="/news">News</Button>
-        <Button color="inherit" component={Link} to="/contact">Contact</Button>
 
-        {/* Fixed Conditional Rendering */}
+        {/* Navbar Links with Scale on Hover */}
+        {["Home", "Team", "Fixtures", "News", "Contact"].map((item, index) => (
+          <Button
+            key={index}
+            color="inherit"
+            component={Link}
+            to={`/${item.toLowerCase() === "home" ? "" : item.toLowerCase()}`}
+            sx={{
+              transition: "transform 0.2s ease, color 0.2s ease",
+              "&:hover": {
+                transform: "scale(1.2)", // Scale effect
+                color: "#FFD700", // Optional hover color
+              },
+            }}
+          >
+            {item}
+          </Button>
+        ))}
+
+        {/* Conditional Rendering for Login/Logout */}
         {userDetails ? (
-  <>
-    <Button color="inherit">{"Hello  " + (userDetails.firstName )}</Button>
-    <Button color="inherit" onClick={handleLagout}>Logout</Button>
-  </>
-) : (
-  <Button color="inherit" component={Link} to="/login">Login</Button>
-)}
+          <>
+           <Button
+              color="inherit"
+              sx={{
+                transition: "transform 0.2s ease",
+                "&:hover": { transform: "scale(1.2)", color: "#FFD700" },
+              }}
+            >
+             Store
+            </Button>
 
+
+            <Button
+              color="inherit"
+              sx={{
+                transition: "transform 0.2s ease",
+                "&:hover": { transform: "scale(1.2)", color: "#FFD700" },
+              }}
+            >
+              {"Hello  " + userDetails.firstName}
+            </Button>
+            <Button
+              color="inherit"
+              onClick={handleLogout}
+              sx={{
+                transition: "transform 0.2s ease",
+                "&:hover": { transform: "scale(1.2)", color: "#FFD700" },
+              }}
+            >
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Button
+            color="inherit"
+            component={Link}
+            to="/login"
+            sx={{
+              transition: "transform 0.2s ease",
+              "&:hover": { transform: "scale(1.2)", color: "#FFD700" },
+            }}
+          >
+            Login
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );

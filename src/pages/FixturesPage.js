@@ -25,25 +25,18 @@ const fixturesData = [
 ];
 
 const FixturesPage = () => {
-  const [fixtures, setFixtures] = useState(fixturesData);
   const [selectedTeam, setSelectedTeam] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedFixture, setSelectedFixture] = useState(null);
 
-  const handleTeamChange = (e) => {
-    setSelectedTeam(e.target.value);
-  };
+  const handleTeamChange = (e) => setSelectedTeam(e.target.value);
+  const handleDateChange = (e) => setSelectedDate(e.target.value);
 
-  const handleDateChange = (e) => {
-    setSelectedDate(e.target.value);
-  };
-
-  const filteredFixtures = fixtures.filter((fixture) => {
-    return (
-      (selectedTeam === "" || fixture.homeTeam === selectedTeam || fixture.awayTeam === selectedTeam) &&
-      (selectedDate === "" || fixture.date === selectedDate)
-    );
-  });
+  // Use fixturesData instead of an undefined variable "fixtures"
+  const filteredFixtures = fixturesData.filter(fixture =>
+    (selectedTeam === "" || fixture.homeTeam === selectedTeam || fixture.awayTeam === selectedTeam) &&
+    (selectedDate === "" || fixture.date === selectedDate)
+  );
 
   return (
     <Container>
@@ -51,15 +44,16 @@ const FixturesPage = () => {
       <Typography variant="h3" gutterBottom>
         Fixtures & Results
       </Typography>
-{/* */}
-      {/* Filters */}
+
       <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <InputLabel>Filter by Team</InputLabel>
             <Select value={selectedTeam} label="Filter by Team" onChange={handleTeamChange}>
               <MenuItem value="">All Teams</MenuItem>
-              {[...new Set(fixtures.map((f) => f.homeTeam).concat(fixtures.map((f) => f.awayTeam)))].map((team) => (
+              {[...new Set(
+                fixturesData.map(f => f.homeTeam).concat(fixturesData.map(f => f.awayTeam))
+              )].map(team => (
                 <MenuItem key={team} value={team}>{team}</MenuItem>
               ))}
             </Select>
@@ -76,10 +70,8 @@ const FixturesPage = () => {
           />
         </Grid>
       </Grid>
-
-      {/* Fixture List */}
       <Grid container spacing={3}>
-        {filteredFixtures.map((fixture) => (
+        {filteredFixtures.map(fixture => (
           <Grid item xs={12} md={6} lg={4} key={fixture.id}>
             <Card
               sx={{
@@ -96,8 +88,9 @@ const FixturesPage = () => {
                 <Typography variant="body2">
                   {fixture.date} | {fixture.time}
                 </Typography>
-                <Typography variant="body2">Venue: {fixture.venue}</Typography>
-
+                <Typography variant="body2">
+                  Venue: {fixture.venue}
+                </Typography>
                 {fixture.status === "live" && <Chip label="LIVE" color="error" />}
                 {fixture.status === "completed" && (
                   <Typography variant="h6" color="primary">
@@ -110,14 +103,7 @@ const FixturesPage = () => {
           </Grid>
         ))}
       </Grid>
-
-      {/* Match Modal */}
-      <Modal
-        open={Boolean(selectedFixture)}
-        onClose={() => setSelectedFixture(null)}
-        aria-labelledby="match-details-modal"
-        aria-describedby="modal-showing-match-details"
-      >
+      <Modal open={Boolean(selectedFixture)} onClose={() => setSelectedFixture(null)}>
         <Box
           sx={{
             position: "absolute",
@@ -140,49 +126,19 @@ const FixturesPage = () => {
               <Typography>Time: {selectedFixture.time}</Typography>
               <Typography>Venue: {selectedFixture.venue}</Typography>
               <Typography>Status: {selectedFixture.status}</Typography>
-              {selectedFixture.status === "live" && <Typography color="error">Live Score: {selectedFixture.liveScore}</Typography>}
-              {selectedFixture.status === "completed" && <Typography>Result: {selectedFixture.result}</Typography>}
+              {selectedFixture.status === "live" && (
+                <Typography color="error">Live Score: {selectedFixture.liveScore}</Typography>
+              )}
+              {selectedFixture.status === "completed" && (
+                <Typography>Result: {selectedFixture.result}</Typography>
+              )}
             </>
           )}
         </Box>
       </Modal>
-
-      <style>
-        {`
-          @keyframes blinker {
-            50% { opacity: 0.5; }
-          }
-        `}
-      </style>
+      <style>{`@keyframes blinker { 50% { opacity: 0.5; } }`}</style>
     </Container>
   );
 };
 
 export default FixturesPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                  //First basic code below 00000000000000000000000000000000000000000000000000000000000000000000000000 
-// import { Container, Typography } from "@mui/material";
-
-// const FixturesPage = () => {
-//   return (
-//     <Container>
-//       <Typography variant="h3">Fixtures & Results</Typography>
-//       <Typography>Upcoming and past matches.</Typography>
-//     </Container>
-//   );
-// };
-
-// export default FixturesPage;

@@ -43,6 +43,7 @@ const SignupPage = () => {
       <form onSubmit={handleRegister}>
         <TextField
           fullWidth
+          name="First_Name"
           label="First Name"
           margin="normal"
           value={firstName}
@@ -50,6 +51,7 @@ const SignupPage = () => {
         />
         <TextField
           fullWidth
+          name="Last_Name"
           label="Last Name"
           margin="normal"
           value={lastName}
@@ -57,6 +59,7 @@ const SignupPage = () => {
         />
         <TextField
           fullWidth
+          name="Email_"
           label="Email"
           margin="normal"
           value={email}
@@ -65,6 +68,7 @@ const SignupPage = () => {
         />
         <TextField
           fullWidth
+          name="Password_"
           label="Password"
           type="password"
           margin="normal"
@@ -77,6 +81,7 @@ const SignupPage = () => {
           fullWidth
           type="submit"
           style={{ marginTop: "10px" }}
+          id="signup_btn"
         >
           Sign Up
         </Button>

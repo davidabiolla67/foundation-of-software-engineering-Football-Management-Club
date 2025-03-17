@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { auth, db } from "./Firebase";
-import { doc, getDoc } from "firebase/firestore";
+import React, { useState } from "react";
 import {
   Typography,
   Button,
@@ -90,7 +88,8 @@ const sliderSettings = {
   ],
 };
 
-const HomePage = ({}) => {
+const HomePage = () => {
+  // Initialize userDetails state (this could be fetched from an API later)
   const [userDetails, setUserDetails] = useState(null);
 
   // Featured Players Data

@@ -1,5 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Grid, TextField, Box, Modal, CardContent, Button, IconButton, TextareaAutosize, MenuItem, Select, FormControl, InputLabel, Badge, Snackbar, Alert } from "@mui/material";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Typography,
+  Grid,
+  TextField,
+  Box,
+  Modal,
+  CardContent,
+  Button,
+  IconButton,
+  TextareaAutosize,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Badge,
+  Snackbar,
+  Alert
+} from "@mui/material";
 import { ThumbUp, Facebook, Twitter, LinkedIn, Whatshot, Delete } from "@mui/icons-material";
 
 // Import Images
@@ -60,21 +77,25 @@ const NewsPage = () => {
     setIsLoggedIn(!!storedUser);
   }, []);
 
+  // Wrap sortNews in useCallback so its reference is stable
+  const sortNews = useCallback((order) => {
+    setNewsList((prevNewsList) => {
+      let sortedNews = [...prevNewsList];
+      if (order === "Newest") {
+        sortedNews.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));
+      } else if (order === "Oldest") {
+        sortedNews.sort((a, b) => new Date(a.publishedDate) - new Date(b.publishedDate));
+      } else if (order === "Most Liked") {
+        sortedNews.sort((a, b) => b.likes - a.likes);
+      }
+      return sortedNews;
+    });
+  }, []);
+
+  // Include sortNews in the dependency array
   useEffect(() => {
     sortNews(sortOrder);
-  }, [sortOrder]);
-
-  const sortNews = (order) => {
-    let sortedNews = [...newsList];
-    if (order === "Newest") {
-      sortedNews.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));
-    } else if (order === "Oldest") {
-      sortedNews.sort((a, b) => new Date(a.publishedDate) - new Date(b.publishedDate));
-    } else if (order === "Most Liked") {
-      sortedNews.sort((a, b) => b.likes - a.likes);
-    }
-    setNewsList(sortedNews);
-  };
+  }, [sortOrder, sortNews]);
 
   const handleLike = (newsId) => {
     if (!isLoggedIn) {
@@ -172,11 +193,7 @@ const NewsPage = () => {
       <Grid container spacing={3}>
         {filteredNews.map((news) => (
           <Grid item xs={12} md={4} key={news.id}>
-            <Badge
-              color="secondary"
-              badgeContent={<Whatshot />}
-              invisible={news.likes < 5}
-            >
+            <Badge color="secondary" badgeContent={<Whatshot />} invisible={news.likes < 5}>
               <Box
                 sx={{
                   border: "1px solid #ccc",
@@ -241,7 +258,13 @@ const NewsPage = () => {
               <img
                 src={selectedNews.image}
                 alt={selectedNews.title}
-                style={{ width: "100%", height: "auto", borderRadius: "8px", maxHeight: "400px", objectFit: "contain" }}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                  maxHeight: "400px",
+                  objectFit: "contain"
+                }}
               />
               <CardContent>
                 <Typography variant="body1" sx={{ mt: 2 }}>
@@ -274,7 +297,15 @@ const NewsPage = () => {
                     </Typography>
                   ) : (
                     selectedNews.comments.map((comment, index) => (
-                      <Box key={index} sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mt: 1 }}>
+                      <Box
+                        key={index}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          mt: 1
+                        }}
+                      >
                         <Typography variant="body2">• {comment.text}</Typography>
                         {comment.user === currentUser && (
                           <IconButton size="small" onClick={() => handleDeleteComment(index)}>
@@ -331,4 +362,4 @@ const NewsPage = () => {
   );
 };
 
-export default NewsPage;
+export default NewsPage;

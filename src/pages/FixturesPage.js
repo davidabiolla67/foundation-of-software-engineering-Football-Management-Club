@@ -25,7 +25,6 @@ const fixturesData = [
 ];
 
 const FixturesPage = () => {
- 
   const [selectedTeam, setSelectedTeam] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedFixture, setSelectedFixture] = useState(null);
@@ -33,21 +32,26 @@ const FixturesPage = () => {
   const handleTeamChange = (e) => setSelectedTeam(e.target.value);
   const handleDateChange = (e) => setSelectedDate(e.target.value);
 
-  const filteredFixtures = fixtures.filter(fixture =>
+  // Use fixturesData instead of an undefined variable "fixtures"
+  const filteredFixtures = fixturesData.filter(fixture =>
     (selectedTeam === "" || fixture.homeTeam === selectedTeam || fixture.awayTeam === selectedTeam) &&
     (selectedDate === "" || fixture.date === selectedDate)
   );
 
   return (
     <Container>
-      <Typography variant="h3" gutterBottom>Fixtures & Results</Typography>
+      <Typography variant="h3" gutterBottom>
+        Fixtures & Results
+      </Typography>
       <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <InputLabel>Filter by Team</InputLabel>
             <Select value={selectedTeam} label="Filter by Team" onChange={handleTeamChange}>
               <MenuItem value="">All Teams</MenuItem>
-              {[...new Set(fixtures.map(f => f.homeTeam).concat(fixtures.map(f => f.awayTeam)))].map(team => (
+              {[...new Set(
+                fixturesData.map(f => f.homeTeam).concat(fixturesData.map(f => f.awayTeam))
+              )].map(team => (
                 <MenuItem key={team} value={team}>{team}</MenuItem>
               ))}
             </Select>
@@ -76,11 +80,21 @@ const FixturesPage = () => {
               onClick={() => setSelectedFixture(fixture)}
             >
               <CardContent>
-                <Typography variant="h6">{fixture.homeTeam} vs {fixture.awayTeam}</Typography>
-                <Typography variant="body2">{fixture.date} | {fixture.time}</Typography>
-                <Typography variant="body2">Venue: {fixture.venue}</Typography>
+                <Typography variant="h6">
+                  {fixture.homeTeam} vs {fixture.awayTeam}
+                </Typography>
+                <Typography variant="body2">
+                  {fixture.date} | {fixture.time}
+                </Typography>
+                <Typography variant="body2">
+                  Venue: {fixture.venue}
+                </Typography>
                 {fixture.status === "live" && <Chip label="LIVE" color="error" />}
-                {fixture.status === "completed" && <Typography variant="h6" color="primary">Result: {fixture.result}</Typography>}
+                {fixture.status === "completed" && (
+                  <Typography variant="h6" color="primary">
+                    Result: {fixture.result}
+                  </Typography>
+                )}
                 {fixture.status === "upcoming" && <Chip label="Upcoming" color="primary" />}
               </CardContent>
             </Card>
@@ -88,16 +102,34 @@ const FixturesPage = () => {
         ))}
       </Grid>
       <Modal open={Boolean(selectedFixture)} onClose={() => setSelectedFixture(null)}>
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 400, bgcolor: "background.paper", border: "2px solid #000", boxShadow: 24, p: 4 }}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4
+          }}
+        >
           {selectedFixture && (
             <>
-              <Typography variant="h5">{selectedFixture.homeTeam} vs {selectedFixture.awayTeam}</Typography>
+              <Typography variant="h5">
+                {selectedFixture.homeTeam} vs {selectedFixture.awayTeam}
+              </Typography>
               <Typography>Date: {selectedFixture.date}</Typography>
               <Typography>Time: {selectedFixture.time}</Typography>
               <Typography>Venue: {selectedFixture.venue}</Typography>
               <Typography>Status: {selectedFixture.status}</Typography>
-              {selectedFixture.status === "live" && <Typography color="error">Live Score: {selectedFixture.liveScore}</Typography>}
-              {selectedFixture.status === "completed" && <Typography>Result: {selectedFixture.result}</Typography>}
+              {selectedFixture.status === "live" && (
+                <Typography color="error">Live Score: {selectedFixture.liveScore}</Typography>
+              )}
+              {selectedFixture.status === "completed" && (
+                <Typography>Result: {selectedFixture.result}</Typography>
+              )}
             </>
           )}
         </Box>

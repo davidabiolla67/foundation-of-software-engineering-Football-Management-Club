@@ -25,6 +25,7 @@ Before({ timeout: 15000}, async function () {
       '--disable-gpu',
       '--no-sandbox',
       '--disable-dev-shm-usage',
+      '--headless', 
       // Headless mode for CI
       `--user-data-dir=${uniqueUserDataDir}` // Use a unique directory for this session
     ]
@@ -53,7 +54,7 @@ Given('I open the sign up page', { timeout: 15000}, async function () {
 When('I input valid sign up credentials', { timeout: 15000}, async function () {
   await driver.findElement(By.name("First_Name")).sendKeys("rayodoy");
     await driver.findElement(By.name("Last_Name")).sendKeys("badoenman");
-    await driver.findElement(By.name("Email_")).sendKeys("rayodu6700@gmail.com");
+    await driver.findElement(By.name("Email_")).sendKeys("rayoduh6700@gmail.com");
     await driver.findElement(By.name("Password_")).sendKeys("password123");
     await driver.findElement(By.id("signup_btn")).click();
 });

@@ -47,10 +47,11 @@ const FixturesPage = () => {
 
   return (
     <Container>
+      
       <Typography variant="h3" gutterBottom>
         Fixtures & Results
       </Typography>
-
+{/* */}
       {/* Filters */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid item xs={12} md={6}>

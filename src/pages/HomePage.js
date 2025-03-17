@@ -18,7 +18,6 @@ import player2 from "../assets/images/player2.jpg";
 import player3 from "../assets/images/player3.jpg";
 import latestNews1 from "../assets/images/LatestNews1.jpg";
 
-// Custom Next Arrow Component
 function SampleNextArrow(props) {
   const { onClick } = props;
   return (
@@ -40,7 +39,6 @@ function SampleNextArrow(props) {
   );
 }
 
-// Custom Prev Arrow Component
 function SamplePrevArrow(props) {
   const { onClick } = props;
   return (
@@ -66,7 +64,7 @@ const sliderSettings = {
   dots: false,
   infinite: true,
   speed: 500,
-  slidesToShow: 3, // Adjust the number of slides visible at once
+  slidesToShow: 3,
   slidesToScroll: 1,
   arrows: true,
   draggable: true,
@@ -90,7 +88,8 @@ const sliderSettings = {
 
 const HomePage = () => {
   // Initialize userDetails state (this could be fetched from an API later)
-  const [userDetails, setUserDetails] = useState(null);
+  const [userDetails] = useState(null);
+
 
   // Featured Players Data
   const featuredPlayers = [

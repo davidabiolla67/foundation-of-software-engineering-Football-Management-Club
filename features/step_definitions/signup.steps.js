@@ -25,7 +25,7 @@ Before({ timeout: 15000}, async function () {
       '--disable-gpu',
       '--no-sandbox',
       '--disable-dev-shm-usage',
-      '--headless', // Headless mode for CI
+      // Headless mode for CI
       `--user-data-dir=${uniqueUserDataDir}` // Use a unique directory for this session
     ]
   });
@@ -46,28 +46,40 @@ After(async function () {
 });
 
 // Steps for successful login
-Given('I open the login page', { timeout: 15000}, async function () {
-    await driver.get('http://localhost:3000/login');
+Given('I open the sign up page', { timeout: 15000}, async function () {
+    await driver.get('http://localhost:3000/signup');
 });
 
-When('I input valid login credentials', { timeout: 15000}, async function () {
-    await driver.findElement(By.name("email")).sendKeys("rayo@gmail.com");
-    await driver.findElement(By.name("password")).sendKeys("password123");
-    await driver.findElement(By.id("login_btn")).click();
+When('I input valid sign up credentials', { timeout: 15000}, async function () {
+  await driver.findElement(By.name("First_Name")).sendKeys("rayodoy");
+    await driver.findElement(By.name("Last_Name")).sendKeys("badoenman");
+    await driver.findElement(By.name("Email_")).sendKeys("rayodu6700@gmail.com");
+    await driver.findElement(By.name("Password_")).sendKeys("password123");
+    await driver.findElement(By.id("signup_btn")).click();
 });
 
-Then('I should be navigated to home page', { timeout: 15000}, async function () {
-    await driver.wait(until.elementLocated(By.css('.AppBar')), 10000); // Wait for AppBar to appear on home page
+Then('I should see user logged in successfully', { timeout: 15000}, async function () {
+
+  await driver.sleep(5000);
+  let successMessage = await driver.wait(
+    until.elementLocated(By.className("Toastify__toast")),
+    10000
+  );
+    let text = await successMessage.getText();
+    let cleanedText = text.trim();
+    assert.strictEqual(cleanedText, "user Registered Successfully");
+ 
 });
 
-// Steps for unsuccessful login
-When('I input invalid login credentials',{ timeout: 15000}, async function () {
-    await driver.findElement(By.name("email")).sendKeys("wronguser@gmail.com");
-    await driver.findElement(By.name("password")).sendKeys("wrongpassword");
-    await driver.findElement(By.id("login_btn")).click();
+When('I input already registerd credentials',{ timeout: 15000}, async function () {
+     await driver.findElement(By.name("First_Name")).sendKeys("rayoy");
+    await driver.findElement(By.name("Last_Name")).sendKeys("batenman");
+    await driver.findElement(By.name("Email_")).sendKeys("rayo6700@gmail.com");
+    await driver.findElement(By.name("Password_")).sendKeys("password123");
+    await driver.findElement(By.id("signup_btn")).click();
 });
-
-Then('I should see an error message for login', { timeout: 15000 }, async function () {
+ 
+Then('I should see an error message for sign up', { timeout: 15000 }, async function () {
     // Pause to allow the toast notification to appear
     await driver.sleep(5000);
     
@@ -88,7 +100,7 @@ Then('I should see an error message for login', { timeout: 15000 }, async functi
     console.log(text);
     
     // Assert the error text
-    assert.strictEqual(cleanedText, "invalid-credential.");
+    assert.strictEqual(cleanedText, "Error (auth/email-already-in-use).");
 });
 
-
+ 

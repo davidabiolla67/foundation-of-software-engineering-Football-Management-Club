@@ -88,8 +88,9 @@ const sliderSettings = {
   ],
 };
 
-const HomePage = ({}) => {
-
+const HomePage = () => {
+  // Initialize userDetails state (this could be fetched from an API later)
+  const [userDetails, setUserDetails] = useState(null);
 
   // Featured Players Data
   const featuredPlayers = [

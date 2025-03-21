@@ -80,6 +80,18 @@ const Header = () => {
           </Button>
         ))}
 
+<Button
+          color="inherit"
+          component={Link}
+          to="/store"  // ✅ Added proper navigation link
+          sx={{
+            transition: "transform 0.2s ease",
+            "&:hover": { transform: "scale(1.2)", color: "#FFD700" },
+          }}
+        >
+          Store
+        </Button>
+
         {/* Conditional Rendering for Login/Logout */}
         {userDetails ? (
           <>

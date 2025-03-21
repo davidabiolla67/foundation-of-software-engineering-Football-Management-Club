@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import { Container } from "@mui/material";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Store from "./pages/Store";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                         <Route path="/fixtures" element={<FixturesPage />} />
                         <Route path="/news" element={<NewsPage />} />
                         <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/store" element={<Store />} /> {/* ✅ Add Store Route */}
                     </Routes>
                     <ToastContainer />
                 </Container>

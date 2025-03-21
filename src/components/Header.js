@@ -28,9 +28,8 @@ const Header = () => {
         setUserDetails(null);
       }
     });
-   
+
     return () => unsubscribe();
-    
   }, []);
 
   async function handleLogout() {
@@ -40,7 +39,7 @@ const Header = () => {
       console.log(error.message);
     }
   }
- 
+
   return (
     <AppBar className="AppBar" position="static" style={{ background: "#003366" }}>
       <Toolbar>
@@ -80,7 +79,12 @@ const Header = () => {
           </Button>
         ))}
 
+<<<<<<< HEAD
 <Button
+=======
+        {/* Store Page Link */}
+        <Button
+>>>>>>> bcf118fdfe8d72223398fff31b915a2fdb691d02
           color="inherit"
           component={Link}
           to="/store"  // ✅ Added proper navigation link
@@ -90,22 +94,15 @@ const Header = () => {
           }}
         >
           Store
+<<<<<<< HEAD
         </Button>
+=======
+        </Button>
+>>>>>>> bcf118fdfe8d72223398fff31b915a2fdb691d02
 
         {/* Conditional Rendering for Login/Logout */}
         {userDetails ? (
           <>
-           <Button
-              color="inherit"
-              sx={{
-                transition: "transform 0.2s ease",
-                "&:hover": { transform: "scale(1.2)", color: "#FFD700" },
-              }}
-            >
-             Store
-            </Button>
-
-
             <Button
               color="inherit"
               sx={{

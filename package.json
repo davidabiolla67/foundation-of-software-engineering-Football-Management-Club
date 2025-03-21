@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cucumber/cucumber": "^11.2.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.5",
@@ -31,6 +30,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "build:azure": "npm run build",
     "lint": "eslint .,.jsx,.ts,.tsx",
@@ -58,6 +58,7 @@
     "@babel/core": "^7.26.9",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
+    "@cucumber/cucumber": "^11.2.0",
     "@eslint/js": "^9.22.0",
     "babel-jest": "^29.7.0",
     "chai": "^5.2.0",
@@ -69,6 +70,4 @@
     "jest": "^27.5.1",
     "selenium-webdriver": "^4.29.0"
   }
-
-  
 }

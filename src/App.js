@@ -12,6 +12,10 @@ import { Container } from "@mui/material";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Store from "./pages/Store";
+import Checkout from "./pages/Checkout";
+import OrderHistory from "./pages/OrderHistory";
+
+
 
 
 function App() {
@@ -35,6 +39,8 @@ function App() {
                         <Route path="/news" element={<NewsPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/store" element={<Store />} /> {/* ✅ Add Store Route */}
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/order-history" element={<OrderHistory />} />
                     </Routes>
                     <ToastContainer />
                 </Container>

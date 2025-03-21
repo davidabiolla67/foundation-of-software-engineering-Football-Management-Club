@@ -79,12 +79,8 @@ const Header = () => {
           </Button>
         ))}
 
-<<<<<<< HEAD
-<Button
-=======
         {/* Store Page Link */}
         <Button
->>>>>>> bcf118fdfe8d72223398fff31b915a2fdb691d02
           color="inherit"
           component={Link}
           to="/store"  // ✅ Added proper navigation link
@@ -94,11 +90,7 @@ const Header = () => {
           }}
         >
           Store
-<<<<<<< HEAD
-        </Button>
-=======
         </Button>
->>>>>>> bcf118fdfe8d72223398fff31b915a2fdb691d02
 
         {/* Conditional Rendering for Login/Logout */}
         {userDetails ? (

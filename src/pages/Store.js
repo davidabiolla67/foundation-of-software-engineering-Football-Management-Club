@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useNavigate } from "react-router-dom";
 import homeJersey from "../assets/images/home_jersey.jpg";
 import awayJersey from "../assets/images/away_jersey.jpg";
 import trainingKit from "../assets/images/tshirt.jpg";
@@ -16,22 +17,34 @@ const products = [
   { id: 3, name: "Training Kit", price: 25, category: "Training", stock: 15, image: trainingKit }
 ];
 
-
 const Store = () => {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const addToCart = (product) => {
     if (product.stock === 0) return;
-    const existingItem = cart.find((item) => item.id === product.id);
-    if (existingItem) {
-      setCart(cart.map((item) => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === product.id);
+      if (existingItem) {
+        return prevCart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
+  };
+
+  const removeFromCart = (productId) => {
+    setCart(cart.filter((item) => item.id !== productId));
+  };
+
+  const updateQuantity = (productId, amount) => {
+    setCart(cart.map((item) => item.id === productId ? { ...item, quantity: Math.max(1, item.quantity + amount) } : item));
   };
 
   const toggleWishlist = (product) => {
@@ -42,48 +55,20 @@ const Store = () => {
     }
   };
 
-  const filterProducts = () => {
-    let filtered = products;
-    if (category !== "All") {
-      filtered = filtered.filter((product) => product.category === category);
-    }
-    if (search) {
-      filtered = filtered.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()));
-    }
-    if (sort === "low") {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (sort === "high") {
-      filtered.sort((a, b) => b.price - a.price);
-    }
-    return filtered;
-  };
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4" gutterBottom>Club Store</Typography>
-        <Badge badgeContent={cart.length} color="primary">
+        <Badge badgeContent={totalItems} color="primary">
           <ShoppingCartIcon fontSize="large" />
         </Badge>
       </Box>
 
-      {/* Filters & Search */}
-      <Box display="flex" gap={2} sx={{ mb: 3 }}>
-        <Select value={category} onChange={(e) => setCategory(e.target.value)}>
-          <MenuItem value="All">All Categories</MenuItem>
-          <MenuItem value="Jersey">Jerseys</MenuItem>
-          <MenuItem value="Training">Training Kits</MenuItem>
-        </Select>
-        <Select value={sort} onChange={(e) => setSort(e.target.value)}>
-          <MenuItem value="">Sort by</MenuItem>
-          <MenuItem value="low">Price: Low to High</MenuItem>
-          <MenuItem value="high">Price: High to Low</MenuItem>
-        </Select>
-        <TextField placeholder="Search products..." fullWidth value={search} onChange={(e) => setSearch(e.target.value)} />
-      </Box>
-
       <Grid container spacing={3}>
-        {filterProducts().map((product) => (
+        {products.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product.id}>
             <Card sx={{ boxShadow: 3, borderRadius: 2, transition: "0.3s", '&:hover': { boxShadow: 6 } }}>
               <CardMedia
@@ -114,6 +99,43 @@ const Store = () => {
           </Grid>
         ))}
       </Grid>
+      
+      {/* Cart Summary */}
+      <Box mt={4} p={3} sx={{ bgcolor: "#f5f5f5", borderRadius: 2, boxShadow: 2 }}>
+        <Typography variant="h5">Cart Summary</Typography>
+        {cart.length === 0 ? (
+          <Typography variant="body1" sx={{ mt: 1, color: "gray" }}>Your cart is empty.</Typography>
+        ) : (
+          cart.map((item) => (
+            <Box key={item.id} display="flex" alignItems="center" justifyContent="space-between" sx={{ my: 1, p: 2, bgcolor: "white", borderRadius: 1, boxShadow: 1 }}>
+              <Typography variant="body1">{item.name} (${item.price} x {item.quantity})</Typography>
+              <Box>
+                <IconButton onClick={() => updateQuantity(item.id, -1)}>
+                  <RemoveCircleOutlineIcon />
+                </IconButton>
+                <IconButton onClick={() => updateQuantity(item.id, 1)}>
+                  <AddCircleOutlineIcon />
+                </IconButton>
+                <IconButton onClick={() => removeFromCart(item.id)}>
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </Box>
+            </Box>
+          ))
+        )}
+        <Typography variant="h6" sx={{ mt: 2, fontWeight: "bold" }}>Total Price: ${totalPrice}</Typography>
+        {cart.length > 0 && (
+          <Button 
+            variant="contained" 
+            color="success" 
+            fullWidth 
+            sx={{ mt: 2 }} 
+            onClick={() => navigate("/checkout", { state: { cart } })}
+          >
+            Proceed to Checkout
+          </Button>
+        )}
+      </Box>
     </Container>
   );
 };

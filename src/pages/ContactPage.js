@@ -106,9 +106,9 @@ const ContactPage = () => {
             />
 
             {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-            {success && <Alert severity="success" sx={{ mt: 2 }}>Message sent successfully!</Alert>}
+            {success && <Alert id="success" severity="success" sx={{ mt: 2 }}>Message sent successfully!</Alert>}
 
-            <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+            <Button type="submit" id="send_btn" variant="contained" color="primary" sx={{ mt: 2 }}>
               Send Message
             </Button>
           </form>

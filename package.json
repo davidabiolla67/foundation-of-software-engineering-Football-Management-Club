@@ -33,7 +33,8 @@
   "scripts": {
     "build": "react-scripts build",
     "build:azure": "npm run build",
-    "lint": "eslint .,.jsx,.ts,.tsx"
+    "lint": "eslint .,.jsx,.ts,.tsx",
+     "start": "react-scripts start"
   },
   "eslintConfig": {
     "extends": [

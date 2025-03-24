@@ -77,7 +77,7 @@ const Checkout = () => {
           <TextField fullWidth label="Address" name="address" required onChange={handleChange} sx={{ my: 1 }} />
           <TextField fullWidth label="Payment Method" name="payment" required onChange={handleChange} sx={{ my: 1 }} />
 
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+          <Button type="submit" variant="contained" color="primary" id="confirmdtbtn" fullWidth sx={{ mt: 2 }}>
             Confirm Order
           </Button>
         </Box>
